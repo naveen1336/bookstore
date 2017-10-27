@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
 import BookList from '../containers/book_list';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
 
-
-
+import reducers from '../reducers';
 export default class App extends Component
 {
 
@@ -19,7 +20,13 @@ render()
 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+const createStoreWithMiddleware = applyMiddleware()(createStore);
 
-  ReactDom.render(<App />, document.querySelector('.container'));
+document.addEventListener('DOMContentLoaded', () => {
+	ReactDom.render(
+	  <Provider store={createStoreWithMiddleware(reducers)}>
+	    <App />
+	  </Provider>
+	, document.querySelector('.container'));
+
 });
